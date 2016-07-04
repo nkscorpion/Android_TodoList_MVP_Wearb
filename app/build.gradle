@@ -1,5 +1,5 @@
 apply plugin: 'com.android.application'
-
+apply plugin: 'android-apt'
 android {
     compileSdkVersion 23
     buildToolsVersion '23.0.0'
@@ -22,10 +22,13 @@ android {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
+    apt 'com.jakewharton:butterknife-compiler:8.1.0'
+    compile files('/Users/shadowinlife/Documents/android-workspace/todolist/libs/IngenicGlassSDK.jar')
+    compile files('/Users/shadowinlife/Documents/android-workspace/todolist/libs/Msc.jar')
     compile 'com.hannesdorfmann.mosby:mvp:2.0.1'
     compile 'com.hannesdorfmann.mosby:viewstate:2.0.1'
     compile 'org.slf4j:slf4j-android:1.7.7'
     compile 'com.squareup.retrofit2:retrofit:2.1.0'
-    compile files('/Users/shadowinlife/Documents/android-workspace/todolist/libs/IngenicGlassSDK.jar')
-    compile files('/Users/shadowinlife/Documents/android-workspace/todolist/libs/Msc.jar')
+    compile 'com.jakewharton:butterknife:8.1.0'
+    compile 'com.android.support:support-v4:23.4.0'
 }

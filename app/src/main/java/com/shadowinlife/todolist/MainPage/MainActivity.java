@@ -1,8 +1,9 @@
-package com.shadowinlife.todolist;
+package com.shadowinlife.todolist.MainPage;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
+
+import com.shadowinlife.todolist.R;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
