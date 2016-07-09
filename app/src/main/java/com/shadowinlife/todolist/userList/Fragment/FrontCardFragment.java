@@ -1,9 +1,9 @@
-package com.shadowinlife.todolist.userList;
+package com.shadowinlife.todolist.userList.Fragment;
 
 import android.graphics.Color;
 import android.os.Bundle;
 
-import android.support.v4.app.Fragment;
+import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.shadowinlife.todolist.Animation.ColorFactory;
 import com.shadowinlife.todolist.R;
+import com.shadowinlife.todolist.models.Entity.Todo;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,24 +22,34 @@ import butterknife.ButterKnife;
 
 public class FrontCardFragment extends Fragment {
     private static Logger LOG = LoggerFactory.getLogger(FrontCardFragment.class);
-    int mNum;
+    private int position;
+    private Todo todo;
     @BindView(R.id.Todolist_Title)
     TextView title;
 
-    static FrontCardFragment newInstance(int num) {
+    public static FrontCardFragment newInstance(int position, Todo todo) {
         FrontCardFragment mFragment = new FrontCardFragment();
         Bundle args = new Bundle();
-        args.putInt("num", num);
+        args.putInt("position", position);
+        args.putParcelable("todo", todo);
         mFragment.setArguments(args);
         return mFragment;
     }
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mNum = getArguments() != null ? getArguments().getInt("num") : 1;
-        System.out.println("mNum Fragment create =" + mNum);
+        Bundle bundle = getArguments();
+        if (bundle.containsKey("position")) {
+            this.position = bundle.getInt("position");
+        } else {
+            this.position = 0;
+        }
+        if (bundle.containsKey("todo")) {
+            this.todo = bundle.getParcelable("todo");
+        } else {
+            this.todo = new Todo();
+        }
     }
 
     @Override
@@ -51,10 +62,11 @@ public class FrontCardFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = (View) inflater.inflate(
                 R.layout.fragment_front_card, container, false);
+
         ButterKnife.bind(this, rootView);
-        rootView.setBackgroundColor(ColorFactory.getBackGroundColor(mNum));
+        rootView.setBackgroundColor(ColorFactory.getBackGroundColor(position));
         title.setTextColor(Color.WHITE);
-        title.setText(String.valueOf(mNum));
+        title.setText(todo.getTitle());
         return rootView;
     }
 

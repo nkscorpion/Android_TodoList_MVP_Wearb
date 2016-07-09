@@ -1,19 +1,21 @@
 package com.shadowinlife.todolist.userList;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
-import android.view.ViewGroup;
 
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.view.ViewPager;
+import android.view.MotionEvent;
+import android.view.View;
+
+import com.ingenic.glass.api.touchboard.GestureDetector;
 import com.shadowinlife.todolist.Animation.DepthPageTransformer;
 import com.shadowinlife.todolist.R;
+import com.shadowinlife.todolist.models.Entity.Todo;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -21,12 +23,17 @@ import butterknife.ButterKnife;
 /**
  * Created by shadowinlife on 16/7/3.
  */
-public class UserTodolistActive extends FragmentActivity {
+public class UserTodolistActive extends FragmentActivity implements IListView, GestureDetector.OnGestureListener {
     private static Logger LOG = LoggerFactory.getLogger(UserTodolistActive.class);
-    /**
-     * The number of pages (wizard steps) to show in this demo.
-     */
-    private static final int NUM_PAGES = 5;
+    public static final String STATE_LIST = "TodoList";
+    private IListPresent presenter;
+
+    public IListPresent getPresenter() {
+        if (presenter == null) {
+            presenter = new ListPresent(this, this);
+        }
+        return presenter;
+    }
 
     /**
      * The pager widget, which handles animation and allows swiping horizontally to access previous
@@ -38,48 +45,123 @@ public class UserTodolistActive extends FragmentActivity {
     /**
      * The pager adapter, which provides the pages to the view pager widget.
      */
-    private PagerAdapter mPagerAdapter;
+    private ScreenSlidePagerAdapter mPagerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_todolist_active);
         ButterKnife.bind(this);
-        mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
+
+        if (savedInstanceState == null) {
+            //TODO should add arraylist to mAdapter
+            mPagerAdapter = new ScreenSlidePagerAdapter(getFragmentManager(), new ArrayList<Todo>());
+        } else {
+            ArrayList<Todo> todoArrayList = savedInstanceState.getParcelableArrayList(STATE_LIST);
+            mPagerAdapter = new ScreenSlidePagerAdapter(getFragmentManager(), todoArrayList);
+        }
         mPager.setAdapter(mPagerAdapter);
         mPager.setPageTransformer(true, new DepthPageTransformer());
+
+        getPresenter().refreshSession();
     }
 
-    /**
-     * A simple pager adapter that represents 5 ScreenSlidePageFragment objects, in
-     * sequence.
+    public void FlipCard() {
+        mPagerAdapter.flipCard();
+    }
+
+    @Override
+    public void setTodos(ArrayList<Todo> todos) {
+        mPagerAdapter.setTodoList(todos);
+    }
+
+    @Override
+    public void notifyListDataSetChanged() {
+        mPagerAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void notifyListItemRemoved(int position) {
+
+    }
+
+    @Override
+    public void notifyListItemInserted(int position) {
+
+    }
+
+    @Override
+    public void showItemDialog(Todo todo, CharSequence[] items) {
+
+    }
+
+    @Override
+    public void showTodoViewToEdit(Todo todo) {
+
+    }
+
+    @Override
+    public void showTodoView() {
+
+    }
+
+    /*
+     *  Glass Guesture detect
      */
-    private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
-        public ScreenSlidePagerAdapter(FragmentManager fm) {
-            super(fm);
-        }
+    @Override
+    public boolean onDown(boolean b) {
+        return false;
+    }
 
-        // 初始化每个页卡选项
-        @Override
-        public Object instantiateItem(ViewGroup arg0, int arg1) {
-            // TODO Auto-generated method stub
-            return super.instantiateItem(arg0, arg1);
-        }
+    @Override
+    public boolean onUp(MotionEvent motionEvent, boolean b) {
+        return false;
+    }
 
-        @Override
-        public void destroyItem(ViewGroup container, int position, Object object) {
-            LOG.error("position Destory" + position);
-            super.destroyItem(container, position, object);
-        }
+    @Override
+    public boolean onScroll(MotionEvent motionEvent, MotionEvent motionEvent1, float v, float v1, boolean b) {
+        return false;
+    }
 
-        @Override
-        public Fragment getItem(int position) {
-            return com.shadowinlife.todolist.userList.FrontCardFragment.newInstance(position);
-        }
+    @Override
+    public boolean onLongPress(boolean b) {
+        return false;
+    }
 
-        @Override
-        public int getCount() {
-            return NUM_PAGES;
-        }
+    @Override
+    public boolean onSlideUp(boolean b) {
+        return false;
+    }
+
+    @Override
+    public boolean onSlideDown(boolean b) {
+        return false;
+    }
+
+    @Override
+    public boolean onSlideLeft(boolean b) {
+        mPager.setCurrentItem(mPager.getCurrentItem() - 1);
+        return true;
+    }
+
+    @Override
+    public boolean onSlideRight(boolean b) {
+        mPager.setCurrentItem(mPager.getCurrentItem() + 1);
+        return true;
+    }
+
+    @Override
+    public boolean onTap(boolean b) {
+        mPagerAdapter.flipCard();
+        return true;
+    }
+
+    @Override
+    public boolean onDoubleTap(boolean b) {
+        return false;
+    }
+
+    public void ClickCard(View view) {
+        mPagerAdapter.flipCard();
     }
 }
