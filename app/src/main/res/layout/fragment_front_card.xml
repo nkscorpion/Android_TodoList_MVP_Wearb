@@ -11,5 +11,13 @@
         android:lineSpacingMultiplier="1.2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/Todolist_Title" />
+        android:id="@+id/frontcard_Title" />
+
+    <TextClock
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/frontcard_clock"
+        android:layout_below="@+id/frontcard_Title"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="29dp" />
 </RelativeLayout>

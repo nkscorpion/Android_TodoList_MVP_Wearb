@@ -44,6 +44,7 @@ public class ListPresent implements IListPresent {
         todoList.add(test1);
         todoList.add(test2);
         todoList.add(test3);
+        // interactor.get();
         view.setTodos(todoList);
         view.notifyListDataSetChanged();
     }

@@ -27,6 +27,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <meta-data
+            android:name="IFLYTEK_APPKEY"
+            android:value="'57623863'" />
     </application>
 
 </manifest>
