@@ -3,4 +3,8 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="days">天</string>
+    <string name="hours">小时</string>
+    <string name="minutes">分钟</string>
+    <string name="seconds">秒</string>
 </resources>
