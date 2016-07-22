@@ -66,9 +66,6 @@ public class UserTodolistActive extends FragmentActivity implements IListView, G
         getPresenter().refreshSession();
     }
 
-    public void FlipCard() {
-        mPagerAdapter.flipCard();
-    }
 
     @Override
     public void setTodos(ArrayList<Todo> todos) {
@@ -152,8 +149,7 @@ public class UserTodolistActive extends FragmentActivity implements IListView, G
 
     @Override
     public boolean onTap(boolean b) {
-        mPagerAdapter.flipCard();
-        return true;
+        return false;
     }
 
     @Override
@@ -162,6 +158,6 @@ public class UserTodolistActive extends FragmentActivity implements IListView, G
     }
 
     public void ClickCard(View view) {
-        mPagerAdapter.flipCard();
+
     }
 }

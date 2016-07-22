@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.iflytek.cloud.ErrorCode;
 import com.iflytek.cloud.GrammarListener;
@@ -23,8 +22,8 @@ import org.slf4j.LoggerFactory;
 /**
  * Created by shadowinlife on 16/7/10.
  */
-public class CommandService {
-    private static final Logger LOG = LoggerFactory.getLogger(CommandService.class);
+public class mscAsrThread implements Runnable {
+    private static final Logger LOG = LoggerFactory.getLogger(mscAsrThread.class);
 
     // 语音识别对象
     private SpeechRecognizer mAsr;
@@ -36,18 +35,11 @@ public class CommandService {
     private static final String KEY_GRAMMAR_ABNF_ID = "grammar_abnf_id";
     private static final String GRAMMAR_TYPE_ABNF = "abnf";
 
-    public void init(Context context) {
+
+    public mscAsrThread(Context context) {
         // 初始化识别对象
         this.context = context;
         mAsr = SpeechRecognizer.createRecognizer(context, mInitListener);
-
-    }
-
-    public void startListen() {
-        int ret = mAsr.startListening(mRecognizerListener);
-        if (ret != ErrorCode.SUCCESS) {
-            LOG.error("识别失败,错误码: " + ret);
-        }
     }
 
     /**
@@ -138,6 +130,20 @@ public class CommandService {
 
         }
     };
+
+    @Override
+    public void run() {
+        try {
+            while (true) {
+                int ret = mAsr.startListening(mRecognizerListener);
+                if (ret != ErrorCode.SUCCESS) {
+                    LOG.error("识别失败,错误码: " + ret);
+                }
+            }
+        } catch (Exception ex) {
+            LOG.error(ex.getMessage());
+        }
+    }
 }
 
 

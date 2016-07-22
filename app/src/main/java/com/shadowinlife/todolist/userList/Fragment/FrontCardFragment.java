@@ -27,7 +27,8 @@ import butterknife.ButterKnife;
 
 
 public class FrontCardFragment extends Fragment {
-    private static Logger LOG = LoggerFactory.getLogger(FrontCardFragment.class);
+    private static final Logger LOG = LoggerFactory.getLogger(FrontCardFragment.class);
+
     private int position;
     private Todo todo;
     @BindView(R.id.frontcard_Title)
